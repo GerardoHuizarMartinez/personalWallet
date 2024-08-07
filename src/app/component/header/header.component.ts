@@ -15,7 +15,7 @@ export class HeaderComponent {
   flagMenu:boolean = false;
 
   ngOnInit(): void {
-    //this.toggleMenu()
+    this.toggleMenu()
   }
 
   toggleMode(){

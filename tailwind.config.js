@@ -19,11 +19,17 @@ module.exports = {
       'light-black': '#121212',
       'light-gray' : '#CBD5E1',
       'light-blue' : "#65b6ff",
-      'light-green' : '#41e177'
+      'light-green' : '#41e177',
+      'red2' : '#E81313'
       
     },
 
-    extend: {},
+    extend: {
+      height: {
+        'head': '10vh',
+        'bod': '90vh'
+      }
+    },
   },
   plugins: [],
 }

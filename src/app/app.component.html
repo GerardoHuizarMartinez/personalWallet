@@ -1,7 +1,3 @@
-<div class="flex flex-col w-screen overflow-x-hidden h-screen" [ngClass]="darkModeService.darkModeSignal()" > 
-  
-  <app-header></app-header>
-  <app-side-navbar></app-side-navbar>
-  
+<div class="flex flex-col w-screen overflow-x-hidden h-full bg-white lg:h-screen dark:bg-black" [ngClass]="darkModeService.darkModeSignal()" >  
   <router-outlet />
 </div>

@@ -1,0 +1,32 @@
+<div class="h-head">
+    <app-header></app-header>
+    <app-side-navbar></app-side-navbar>
+</div>
+
+<div class="flex bg-light-gray  w-screen h-bod p-2 gap-4">
+
+    <section class="flex w-1/2 h-full rounded-lg border border-gray p-6">
+        <form [formGroup]="formulario"  class="example-form">
+            <p >
+                <mat-form-field appearance="fill">
+                  <mat-label>Fill form field</mat-label>
+                  <input matInput placeholder="Placeholder">
+                  <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                  <mat-hint>Hint</mat-hint>
+                </mat-form-field>
+              </p>
+              <p>
+                <mat-form-field appearance="outline">
+                  <mat-label>Outline form field</mat-label>
+                  <input matInput placeholder="Placeholder">
+                  <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                  <mat-hint>Hint</mat-hint>
+                </mat-form-field>
+              </p>
+        </form>
+    </section>
+
+
+    <section class="flex w-1/2 h-full rounded-lg border border-gray"></section>
+
+</div>

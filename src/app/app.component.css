@@ -1,0 +1,9 @@
+.headerHeight{
+    height: 50vh;
+    max-height: 10vh;
+}
+
+.bodyHeight{
+    height: 90vh;
+    max-height: 90vh;
+}
