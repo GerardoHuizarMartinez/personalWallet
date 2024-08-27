@@ -1,0 +1,82 @@
+<app-header></app-header>
+<app-side-navbar></app-side-navbar>
+
+<div class="w-screen lg:flex 
+h-bod bg-white p-1 gap-2">
+
+    <section class="flex flex-col border border-blue w-1/2 rounded-lg ">
+        
+        <p class="text-3xl p-4"> Agregar categoria </p>
+        <div class="w-full" >
+            <form [formGroup]="formulario2" class="flex flex-col justify-evenly  h-full ">
+                <div class="flex justify-evenly flex-wrap">
+
+                    <mat-form-field class="w-2/5" appearance="outline">
+                        <input matInput placeholder="Nombre de la categoria">
+                        <mat-icon matSuffix class="text-icons"> title </mat-icon>
+                    </mat-form-field>
+
+
+                    <mat-form-field class="w-2/5" appearance="outline">
+                        <input matInput [matDatepicker]="picker" placeholder="Fecha de registro">
+                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+
+                </div>
+
+                <div class="flex justify-evenly">
+
+                    <mat-form-field class="xd w-2/5 focus:outline-none" appearance="outline">
+                        <mat-select placeholder="Fecha de registro">
+                            @for (food of options; track food) {
+                            <mat-option class="" [value]="food.opt">{{food.opt}}</mat-option>
+                            }
+                        </mat-select>
+                    </mat-form-field>
+
+                </div>
+
+
+                <div class="flex justify-evenly p-4">
+                    <button class="w-full border border-icons bg-blue text-white h-10 rounded-lg">Registrar categoria</button>
+                </div>
+
+
+            </form>
+        </div>
+
+    </section>
+
+    <section class="border border-blue w-1/2 rounded-lg p-4 overflow-y-scroll">
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 rounded-lg">
+         
+            <!-- Position Column -->
+            <ng-container matColumnDef="Fecha">
+              <th mat-header-cell *matHeaderCellDef ngClass=" w-3/12"> Fecha de registro </th>
+              <td mat-cell *matCellDef="let element" ngClass="text-center" > {{element.position}} </td>
+            </ng-container>
+          
+            <!-- Name Column -->
+            <ng-container matColumnDef="Categoria" >
+              <th mat-header-cell *matHeaderCellDef ngClass="w-6/12 text-center"> Categoria </th>
+              <td mat-cell *matCellDef="let element" style="padding-left: 50px;"> {{element.name}} </td>
+            </ng-container>
+          
+            <!-- Weight Column -->
+            <ng-container matColumnDef="Accion"  >
+              <th mat-header-cell *matHeaderCellDef ngClass="w-3/12 justify-evenly" > Accion </th>
+              <td mat-cell *matCellDef="let element"> 
+    
+                <mat-icon class="hover:cursor"> delete </mat-icon>  
+                <mat-icon class="hover:cursor"> edit_note  </mat-icon>
+              </td>
+              
+            </ng-container>
+                  
+            <tr mat-header-row *matHeaderRowDef="displayedColumns" ngClass="odd:bg-light-gray"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" ngClass="odd:bg-white even:bg-light-gray "></tr>
+          </table>
+    </section>
+
+</div>

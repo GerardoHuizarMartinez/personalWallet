@@ -1,32 +1,157 @@
-<div class="h-head">
-    <app-header></app-header>
-    <app-side-navbar></app-side-navbar>
-</div>
+  <app-header></app-header>
+  <app-side-navbar ></app-side-navbar>
 
-<div class="flex bg-light-gray  w-screen h-bod p-2 gap-4">
-
-    <section class="flex w-1/2 h-full rounded-lg border border-gray p-6">
-        <form [formGroup]="formulario"  class="example-form">
-            <p >
-                <mat-form-field appearance="fill">
-                  <mat-label>Fill form field</mat-label>
-                  <input matInput placeholder="Placeholder">
-                  <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-                  <mat-hint>Hint</mat-hint>
-                </mat-form-field>
-              </p>
-              <p>
-                <mat-form-field appearance="outline">
-                  <mat-label>Outline form field</mat-label>
-                  <input matInput placeholder="Placeholder">
-                  <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-                  <mat-hint>Hint</mat-hint>
-                </mat-form-field>
-              </p>
-        </form>
-    </section>
+<div class="flex bg-white  w-screen h-bod p-1 gap-2 dark:bg-black">
 
 
-    <section class="flex w-1/2 h-full rounded-lg border border-gray"></section>
+  <section class="flex flex-col gap-4 w-1/2 h-full rouynded-lg border border-gray p-4 rounded-lg justify-evenly">
+    <p class="text-3xl dark:text-white"> Registro de compra </p>
+
+    <form [formGroup]="formulario" class="flex flex-col justify-evenly  h-full ">
+      <div class="flex justify-evenly flex-wrap">
+
+        <mat-form-field class="xd w-2/5 focus:outline-none" appearance="outline">
+          <mat-select placeholder="Categoria">
+            @for (food of options; track food) {
+            <mat-option class="" [value]="food.opt">{{food.opt}}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="w-2/5" appearance="outline">
+          <input matInput [matDatepicker]="picker" placeholder="Fecha de compra">
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+      </div>
+
+      <div class="flex justify-evenly">
+
+        <mat-form-field class="w-2/5" appearance="outline">
+          <input matInput placeholder="Descripción del producto">
+          <mat-icon matSuffix class="text-icons">title</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field class="w-2/5" appearance="outline">
+          <input type="number" matInput placeholder="Precio del producto">
+          <mat-icon matSuffix class="text-icons">attach_money</mat-icon>
+        </mat-form-field>
+
+      </div>
+
+      <div class="flex justify-evenly">
+
+        <mat-form-field class="w-2/5" appearance="outline">
+          <mat-select placeholder="Metodo de pago">
+            @for (food of options; track food) {
+            <mat-option [value]="food.opt">{{food.opt}}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="w-2/5" appearance="outline">
+          <mat-select placeholder="Mensualidades">
+            @for (food of options; track food) {
+            <mat-option [value]="food.opt">{{food.opt}}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="flex flex-col text-center justify-evenly  dark:text-white">
+        Compra a meses
+        <mat-radio-group aria-placeholder="Seleccione el tipo de pago">
+          <mat-radio-button value="1" checked="true" class="text-black">MSI</mat-radio-button>
+          <mat-radio-button value="2">MCI</mat-radio-button>
+        </mat-radio-group>
+      </div>
+
+
+      <div class="flex justify-evenly">
+
+        <mat-form-field class="w-2/5" appearance="outline">
+          <input type="number" matInput placeholder="Total a pagar">
+          <mat-icon matSuffix class="text-icons">payments</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field class="w-2/5" appearance="outline">
+          <input type="number" matInput placeholder="Abono por mes">
+          <mat-icon matSuffix class="text-icons">paid</mat-icon>
+        </mat-form-field>
+
+      </div>
+
+      <div class="flex justify-evenly max-h-max">
+
+        <mat-form-field class="w-2/5" appearance="outline">
+          <input matInput [matDatepicker]="picker2" placeholder="Fecha de primer abono">
+          <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker #picker2></mat-datepicker>
+        </mat-form-field>
+
+        <button
+          class="w-2/5 border border-icons bg-blue text-white h-14 rounded-lg hover:cursor hover:bg-light-black hover:transition ease-in-out">Generar
+          pagos</button>
+      </div>
+
+      <div class="flex">
+        <button class="w-full border border-icons bg-blue text-white h-10 rounded-lg">Registrar</button>
+      </div>
+
+    </form>
+  </section>
+
+
+  <section class="flex flex-col w-1/2 h-full  rounded-lg border border-gray p-2 overflow-y-scroll">
+    <mat-form-field appearance="outline">
+      <input matInput (keyup)="applyFilter($event)" placeholder="Escriba para filtrar" #input>
+    </mat-form-field>
+
+    <div class="mat-elevation-z8 p-2 border border-blue rounded-md w-full border-collapse">
+      <table mat-table [dataSource]="dataSource" matSort>
+
+        <tbody>
+          <!-- ID Column -->
+          <ng-container matColumnDef="Mes">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Mes </th>
+            <td mat-cell *matCellDef="let row"> {{row.id}} </td>
+          </ng-container>
+
+          <!-- Progress Column -->
+          <ng-container matColumnDef="Concepto">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha de pago </th>
+            <td mat-cell *matCellDef="let row"> {{row.progress}}% </td>
+          </ng-container>
+
+          <!-- Name Column -->
+          <ng-container matColumnDef="FechaPago">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Concepto </th>
+            <td mat-cell *matCellDef="let row"> {{row.name}} </td>
+          </ng-container>
+
+          <!-- Fruit Column -->
+          <ng-container matColumnDef="Monto">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Monto </th>
+            <td mat-cell *matCellDef="let row"> {{row.fruit}} </td>
+          </ng-container>
+        </tbody>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+
+
+
+        <!-- Row shown when there is no matching data. -->
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell text-center" colspan="4" > No se encontraron resultados para la siguiente busqueda "{{input.value}}"</td>
+        </tr>
+      </table>
+      <mat-paginator [pageSizeOptions]="[3, 6, 9, 12]" aria-label="Select page of users"></mat-paginator>
+
+
+    </div>
+  </section>
 
 </div>
