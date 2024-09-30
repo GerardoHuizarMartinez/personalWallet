@@ -2,327 +2,136 @@
 <app-side-navbar></app-side-navbar>
 
 
-<div class="flex flex-col bg-white body lg:h-bod dark:bg-light-black lg:flex-row  overflow-y-hidden">
+@if (purchases.length == 0) {
 
-  <article class="w-screen h-full p-1 gap-2 flex flex-col lg:h-full">
-    <div class="border-black shadow-xl bg-white border p-4 rounded-lg dark:bg-black lg:max-h-max ">
-      <section class="border-white text-black bg-white h-full dark:bg-black ">
+  <div class="lg:flex lg:w-screen lg:h-bod lg:flex-row dark:bg-light-black lg:p-1 lg:gap-2"> 
+    <div class="border rounded-lg w-screen justify-center text-center flex flex-col  justify-evenly ">
+      <span> Parece que aun no cuentas con información para generar tu reporte </span>
+
+      <a class="text-blue text-3xl hover:cursor-pointer" routerLink="/purchases"> Registra tus primeras compras </a>
+    </div>
+  </div>
+}@else {
+
+
+
+<div class="lg:flex lg:w-screen lg:h-bod lg:flex-row dark:bg-light-black lg:p-1 lg:gap-2">
+
+  <article class="lg:flex lg:flex-col overflow-y-hidden ">
+
+    <div
+      class="border-black shadow-xl bg-white border p-4 rounded-lg dark:bg-black  overflow-y-scroll overflow-x-hidden">
+
+      <section class="border-white text-black bg-white dark:bg-black overflow-x-hidden">
         <div class="flex flex-col justify-between">
           <div class="flex justify-between font-bold">
             <span class="flex dark:text-white">Bienvenido
               <p class="text-blue dark:text-light-blue">&nbsp; Gerardo Huízar</p>
             </span>
-            <p class="dark:text-white">27 de Octubre del 2024</p>
+            <p class="dark:text-white"> {{today.transform(this.curDate,'EEEE d MMMM y','es-MX')}} </p>
           </div>
-
-          <div class="divide-y w-full border border-light-gray justify-center dark:border-red"></div>
-
-
         </div>
 
-        <div class="pt-6 text-black dark:text-white">
-          <span class="flex justify-evenly">Semana 1:
-            <p>$2500.00</p>
-            <p>$2500.00</p>
-            <p>$2500.00</p>
-          </span>
+        <div class="divide-y border border-light-gray justify-center dark:border-red"></div>
 
-          <span class="flex justify-evenly">Semana 2:
-            <p>$2500.00</p>
-            <p>$2500.00</p>
-            <p>$2500.00</p>
-          </span>
-
-          <span class="flex justify-evenly">Semana 3:
-            <p>$2500.00</p>
-            <p>$2500.00</p>
-            <p>$2500.00</p>
-          </span>
-
-          <span class="flex justify-evenly">Semana 4:
-            <p>$2500.00</p>
-            <p>$2500.00</p>
-            <p>$2500.00</p>
-          </span>
-
-        </div>
-
-        <br />
-        <div class="divide-y w-full border border-light-gray justify-center dark:border-red"></div>
-
-        <div class="flex justify-evenly mt-3 font-bold">
-          <span class="flex gap-9 justify-center text-center">
-            <p class="text-green dark:text-light-green">Ingresos: $ 10,000.00</p>
-            <p class="text-red">Gastos: $ 10,000.00</p>
-            <p class="text-blue dark:text-light-blue">Restante: $ 10,000.00</p>
-          </span>
-        </div>
-      </section>
-    </div>
-
-    <div class="border-black shadow-xl bg-white border p-2 rounded-lg dark:bg-black lg:h-4/6  overflow-y-scroll">
-      <section class="max-h-max rounded-lg ">
         <h1 class="text-center p-3 text-2xl dark:text-white">Gastos del mes</h1>
 
-        <table class="w-full table-auto border-collapse rounded-lg ">
+      </section>
+
+      <section class="lg:overflow-y-scroll h-bod ">
+
+        <table class="w-full justify-evenly">
+
           <thead>
-            <tr class="text-center text-white bg-gray dark:bg-black">
-              <th class="border border-black dark:border-white">#</th>
-              <th class="border border-black dark:border-white">Fecha de compra</th>
-              <th class="border border-black dark:border-white">Metodo de pago</th>
-              <th class="border border-black dark:border-white">Concepto</th>
-              <th class="border border-black dark:border-white min-w-24">Precio</th>
+
+            <tr class="w-full bg-light-gray p-4 h-[50px]  ">
+              <th> # </th>
+              <th class="max-w-min"> Fecha de compra </th>
+              <th class="pl-[15px] pr-[15px]"> Metodo de pago </th>
+              <th class="pl-[20px] pr-[20px]"> Descripción </th>
+              <th class="pl-[20px] pr-[20px]"> Precio </th>
+              <th class="pl-[15px] pr-[15px]"> Acción </th>
             </tr>
           </thead>
 
-          <tbody class="text-black dark:text-white">
-            <tr class="break-all odd:bg-white even:bg-light-gray dark:odd:bg-gray dark:even:bg-light-black">
-              <td class="border text-center p-2 w-10">
-                1
-              </td>
-              <td class="border text-center p-2">
-                04/03/2024
-              </td>
-              <td class="border text-center p-2">
-                Efectivo
-              </td>
-              <td class="border p-2">
-                Primer mensualidad del monitor
-              </td>
-              <td class="border m-w-80 text-center p-2 min-w-24">
-                $ 2045.56
-              </td>
+
+          @for (item of purchases; track $index) {
+
+          <tbody class="even:bg-white odd:bg-light-gray">
+ 
+            <tr >
+              <td class="text-center"> {{item.indice}} </td>
+              <td class="text-center"> {{item.purchaseDate | date: 'dd/MM/yyyy'}} </td>
+              <td class="min-w-max"> {{item.paymentMethod}} </td>
+              <td class="pl-[20px] pr-[20px]"> {{item.productName}} </td>
+              <td class="pl-[20px] pr-[20px] text-right"> {{item.price | currency: 'CAD': '$'}} </td>
+              <td class="text-center p-2 w-100px hover>cursor-pointer"> <mat-icon  matTooltip="Eliminar compra" class="scale-125 hover:cursor-pointer text-red" (click)="deletepurchase(item.idProduct)"> delete
+                </mat-icon> </td>
             </tr>
 
-            <tr class="break-all odd:bg-white even:bg-light-gray dark:odd:bg-gray dark:even:bg-light-black">
-              <td class="border text-center p-2">2</td>
-              <td class="border text-center p-2">
-                04/03/2024
-              </td>
-              <td class="border text-center p-2">
-                Tarjeta de Debito
-              </td>
-              <td class="border p-2">
-                Segunda mensualidad del monitor se pone la mitad de lo acordado
-              </td>
-              <td class="border m-w-80 text-center p-2">
-                $ 2045.56
-              </td>
-            </tr>
-
-            <tr class="break-all odd:bg-white even:bg-light-gray dark:odd:bg-gray dark:even:bg-light-black">
-              <td class="border text-center p-2">
-                23
-              </td>
-              <td class="border text-center p-2">
-                04/03/2024
-              </td>
-              <td class="border text-center p-2">
-                Tarjeta de Debito
-              </td>
-              <td class="border p-2">
-                Cena con mi chata mariscos rudy
-              </td>
-              <td class="border m-w-80 text-center p-2 min-w-24">
-                $ 356.00
-              </td>
-            </tr>
-
-            <tr class="break-all odd:bg-white even:bg-light-gray dark:odd:bg-gray dark:even:bg-light-black">
-              <td class="border text-center p-2">2</td>
-              <td class="border text-center p-2">
-                04/03/2024
-              </td>
-              <td class="border text-center p-2">
-                Tarjeta de Debito
-              </td>
-              <td class="border p-2">
-                Segunda mensualidad del monitor se pone la mitad de lo acordado
-              </td>
-              <td class="border m-w-80 text-center p-2">
-                $ 2045.56
-              </td>
-            </tr>
-
-            <tr class="break-all odd:bg-white even:bg-light-gray dark:odd:bg-gray dark:even:bg-light-black">
-              <td class="border text-center p-2">
-                23
-              </td>
-              <td class="border text-center p-2">
-                04/03/2024
-              </td>
-              <td class="border text-center p-2">
-                Tarjeta de Debito
-              </td>
-              <td class="border p-2">
-                Cena con mi chata mariscos rudy
-              </td>
-              <td class="border m-w-80 text-center p-2 min-w-24">
-                $ 356.00
-              </td>
-            </tr>
-
-            <tr class="break-all odd:bg-white even:bg-light-gray dark:odd:bg-gray dark:even:bg-light-black">
-              <td class="border text-center p-2">2</td>
-              <td class="border text-center p-2">
-                04/03/2024
-              </td>
-              <td class="border text-center p-2">
-                Tarjeta de Debito
-              </td>
-              <td class="border p-2">
-                Segunda mensualidad del monitor se pone la mitad de lo acordado
-              </td>
-              <td class="border m-w-80 text-center p-2">
-                $ 2045.56
-              </td>
-            </tr>
-
-            <tr class="break-all odd:bg-white even:bg-light-gray dark:odd:bg-gray dark:even:bg-light-black">
-              <td class="border text-center p-2">
-                23
-              </td>
-              <td class="border text-center p-2">
-                04/03/2024
-              </td>
-              <td class="border text-center p-2">
-                Tarjeta de Debito
-              </td>
-              <td class="border p-2">
-                Cena con mi chata mariscos rudy
-              </td>
-              <td class="border m-w-80 text-center p-2 min-w-24">
-                $ 356.00
-              </td>
-            </tr>
-
-            <tr class="break-all odd:bg-white even:bg-light-gray dark:odd:bg-gray dark:even:bg-light-black">
-              <td class="border text-center p-2">2</td>
-              <td class="border text-center p-2">
-                04/03/2024
-              </td>
-              <td class="border text-center p-2">
-                Tarjeta de Debito
-              </td>
-              <td class="border p-2">
-                Segunda mensualidad del monitor se pone la mitad de lo acordado
-              </td>
-              <td class="border m-w-80 text-center p-2">
-                $ 2045.56
-              </td>
-            </tr>
-
-            <tr class="break-all odd:bg-white even:bg-light-gray dark:odd:bg-gray dark:even:bg-light-black">
-              <td class="border text-center p-2">
-                23
-              </td>
-              <td class="border text-center p-2">
-                04/03/2024
-              </td>
-              <td class="border text-center p-2">
-                Tarjeta de Debito
-              </td>
-              <td class="border p-2">
-                Cena con mi chata mariscos rudy
-              </td>
-              <td class="border m-w-80 text-center p-2 min-w-24">
-                $ 356.00
-              </td>
-            </tr>
-
-            <tr class="break-all odd:bg-white even:bg-light-gray dark:odd:bg-gray dark:even:bg-light-black">
-              <td class="border text-center p-2">2</td>
-              <td class="border text-center p-2">
-                04/03/2024
-              </td>
-              <td class="border text-center p-2">
-                Tarjeta de Debito
-              </td>
-              <td class="border p-2">
-                Segunda mensualidad del monitor se pone la mitad de lo acordado
-              </td>
-              <td class="border m-w-80 text-center p-2">
-                $ 2045.56
-              </td>
-            </tr>
-
-            <tr class="break-all odd:bg-white even:bg-light-gray dark:odd:bg-gray dark:even:bg-light-black">
-              <td class="border text-center p-2">
-                23
-              </td>
-              <td class="border text-center p-2">
-                04/03/2024
-              </td>
-              <td class="border text-center p-2">
-                Tarjeta de Debito
-              </td>
-              <td class="border p-2">
-                Cena con mi chata mariscos rudy
-              </td>
-              <td class="border m-w-80 text-center p-2 min-w-24">
-                $ 356.00
-              </td>
-            </tr>
           </tbody>
+          }
 
         </table>
+      
       </section>
     </div>
+
   </article>
 
-  <article class="w-screen h-full p-1 gap-1  flex flex-col lg:h-full">
+  <article class="lg:flex lg:flex-col overflow-x-hidden gap-2 justify-between h-full">
 
-    <div class="flex flex-col border-black shadow-xl border rounded-lg p-2 bg-white dark:bg-black justify-evenly lg:max-h-max" >
+    <div class="flex h-1/3 flex-col border-black shadow-xl border rounded-lg  bg-white dark:bg-black justify-evenly">
 
-      <section class="w-full flex ">
+      <section class="flex items-center">
 
-        <div class="w-1/2 flex flex-col justify-center p-6">
+        <div class="w-2/3 flex flex-col justify-start p-3">
 
-          <span class="flex justify-between">
+
+          <span class="flex justify-between px-8">
             <p class="font-bold dark:text-white">Ingresos:</p>
             <p class="text-green"> $ 10,047.38</p>
           </span>
 
-          <span class="flex justify-between">
-            <p class="font-bold dark:text-white">Gastos:</p>
-            <p class="text-red"> $ 9,043.03</p>
+
+          @for (item of summary[0]; track $index) {
+
+
+          <span class="flex justify-between px-8">
+            <p class="font-bold dark:text-white">Gastos en efectivo:</p>
+            <p class="text-red"> {{item.efectivo | currency: 'CAD': '$'}} </p>
           </span>
 
-          <span class="flex justify-between">
+          <span class="flex justify-between px-8">
+            <p class="font-bold dark:text-white">Tarjeta debito:</p>
+            <p class="text-blue"> {{item.tdd | currency: 'CAD': '$'}} </p>
+          </span>
+
+          @if(item.transfer > 0){
+          <span class="flex justify-between px-8">
+            <p class="font-bold dark:text-white">Transferencias:</p>
+            <p class="text-orange"> {{item.transfer | currency: 'CAD': '$'}}</p>
+          </span>
+          }
+
+          }
+
+          <span class="flex justify-between px-8">
             <p class="font-bold dark:text-white">Mes anterior:</p>
             <p class="text-black dark:text-white"> $ 1,500.00</p>
           </span>
-
-          <span class="flex justify-between">
-            <p class="font-bold dark:text-white">Tarjeta debito:</p>
-            <p class="text-blue"> $ 5,743.53</p>
-          </span>
-
-          <span class="flex justify-between">
-            <p class="font-bold dark:text-white">Tarjeta credito:</p>
-            <p class="text-orange"> $ 1,278.10</p>
-          </span>
         </div>
 
-        <div class="w-1/2 flex flex-col">
+        <div class="w-1/3 flex flex-col justify-evenly p-1">
           <span class="text-center text-3xl dark:text-white">
             Octubre
           </span>
 
-          <span class="flex items-center justify-center w-full">
+          <span class="flex items-center justify-center ">
 
-            <ngx-charts-pie-chart 
-            [view]="view" 
-            [scheme]="colorScheme" 
-            [results]="single"  
-            [gradient]="gradient" 
-            [legend]="showLegend" 
-            [arcWidth]="arcWidth" 
-            [labels]="showLabels"  
-            [doughnut]="isDoughnut" 
-            (select)="onSelect($event)" 
-            (activate)="onActivate($event)"
-            (deactivate)="onDeactivate($event)">
+            <ngx-charts-pie-chart [view]="view" [scheme]="colorScheme" [results]="single" [gradient]="gradient"
+              [legend]="showLegend" [arcWidth]="arcWidth" [labels]="showLabels" [doughnut]="isDoughnut"
+              (select)="onSelect($event)" (activate)="onActivate($event)" (deactivate)="onDeactivate($event)">
 
             </ngx-charts-pie-chart>
           </span>
@@ -332,91 +141,51 @@
       </section>
 
       <section>
-        <div class="divide-y w-full max-h-max border border-light-gray justify-center dark:border-red"></div>
+        <div class=" w-full border border-light-gray justify-center dark:border-red"></div>
 
-        <div class="flex justify-end p-2 pr-10">
+        <div class="flex justify-end pr-6">
           <p class="text-black dark:text-white">Restante:</p>
           <p class="text-black dark:text-white pl-4">$1,560.25</p>
         </div>
       </section>
     </div>
 
-    <div class="flex flex-col border-black shadow-xl border rounded-lg p-2 bg-white dark:bg-black justify-evenly lg:h-full">
-      <section class="text-2xl text-center dark:text-white">
+    <div
+      class="h-2/3 overflow-y-hidden flex flex-col border-black shadow-xl border rounded-lg p-2 bg-white dark:bg-black justify-evenly  ">
+      <section class="text-2xl text-center dark:text-white ">
         <h2>Gastos por categoria</h2>
       </section>
 
-      <section class="flex">
-        <div class="flex flex-row justify-center w-1/2">
+      <section class="flex pt-4 max-w-min overflow-y-hidden">
 
-          <span class="flex items-center justify-center w-full">
+        <div class="flex flex-row w-1/2">
 
-            <ngx-charts-pie-chart 
-            [view]="viewC" 
-            [scheme]="colorSchemeC" 
-            [results]="singleC"  
-            [gradient]="gradientC" 
-            [legend]="showLegendC" 
-            [arcWidth]="arcWidthC" 
-            [labels]="showLabelsC"  
-            [doughnut]="isDoughnutC" 
-            (select)="onSelect($event)" 
-            (activate)="onActivate($event)"
-            (deactivate)="onDeactivate($event)">
+          <span class="flex flex-col items-center justify-center w-full">
+
+            <ngx-charts-pie-chart [view]="viewCategoriesInformation" [scheme]="colorSchemeC" [results]="categories"
+              [gradient]="gradientC" [legend]="showLegendC" [arcWidth]="arcWidthC" [labels]="showLabelsC"
+              [doughnut]="isDoughnutC" (select)="onSelect($event)" (activate)="onActivate($event)"
+              (deactivate)="onDeactivate($event)">
 
             </ngx-charts-pie-chart>
           </span>
 
         </div>
 
-        <div class="flex justify-center flex-col w-1/2 p-2 text-black dark:text-white lg:overflow-y-scroll lg:h-full ">
-          <span class="flex flex-row justify-between">
-            <p class="pl-6 font-bold">Casa:</p>
-            <p>$ 2,400.00</p>
-          </span>
+        <div class="flex  flex-col w-1/2  pr-4 overflow-y-scroll  text-black dark:text-white ">
+          @for (item of categories; track $index) {
 
           <span class="flex flex-row justify-between">
-            <p class="pl-6 font-bold">Transporte:</p>
-            <p>$ 800.00</p>
+            <p class="pl-6 font-bold"> {{item.name}}:</p>
+            <p> {{item.value | currency: 'CAD': '$' }}</p>
           </span>
+          }
 
-          <span class="flex flex-row justify-between">
-            <p class="pl-6 font-bold">Ocio:</p>
-            <p>$ 350.00</p>
-          </span>
-
-          <span class="flex flex-row justify-between">
-            <p class="pl-6 font-bold">Servicios:</p>
-            <p>$ 300.00</p>
-          </span>
-
-          <span class="flex flex-row justify-between">
-            <p class="pl-6 font-bold">Personal:</p>
-            <p>$ 300.00</p>
-          </span>
-
-          <span class="flex flex-row justify-between">
-            <p class="pl-6 font-bold">Deudas:</p>
-            <p>$ 2,076.00</p>
-          </span>
-
-          <span class="flex flex-row justify-between">
-            <p class="pl-6 font-bold">Alimentos:</p>
-            <p>$ 2,076.00</p>
-          </span>
-
-          <span class="flex flex-row justify-between">
-            <p class="pl-6 font-bold">Otros:</p>
-            <p>$ 698.00</p>
-          </span>
-
-          <div class="divide-y w-full border border-light-black justify-center dark:border-red">
-
-          </div>
+          <div class="divide-y w-full border border-light-black justify-center dark:border-red"></div>
 
           <span class="flex flex-row justify-between">
             <p class="pl-6 font-bold">Total:</p>
-            <p class=" font-bold  ">$ 10,000.00</p>
+            <p class=" font-bold  "> {{totalCategories | currency: 'CAD': '$'}}</p>
           </span>
         </div>
       </section>
@@ -425,3 +194,4 @@
   </article>
 
 </div>
+}

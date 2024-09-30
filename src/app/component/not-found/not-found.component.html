@@ -1,12 +1,12 @@
 <app-header></app-header>
 <app-side-navbar></app-side-navbar>
 
-<div class="h-bod flex flex-col w-screen items-center p-3 dark:bg-black">
-    <div class="flex flex-col text-black border border-gray items-center w-full h-full rounded-lg p-6 justify-evenly dark:text-white">
-        <span class="bg-red2 rounded-full h-max w-max p-6 border border-black">
+<div class=" flex flex-col w-screen items-center h-bod p-3 dark:bg-black">
+    <div class="flex flex-col text-black border border-gray items-center rounded-lg p-6 justify-evenly dark:text-white sm:overflow-y-scroll">
+        <span class="bg-red2 rounded-full p-6 border border-black">
             <svg
-              width="254px"
-              height="254px"
+              width="200px"
+              height="200px"
               viewBox="0 0 24 24"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -31,16 +31,15 @@
             </svg>
           </span>
         
-          <span class="text-9xl p-4"> Oops! </span>
+          <span class="text-7xl p-4"> Oops! </span>
         
           <p class="p-4 text-xl max-w-lg text-center">
             Lo sentimos, la dirección que intentas buscar por el momento no existe.
           </p>
         
-          <p class="text-7xl"> 404 </p>
+          <p class="text-5xl"> 404 </p>
         
            <p class="items-center text-center flex flex-col gap-4 "> 
             <a class="text-blue text-2xl hover:cursor-pointer dark:text-light-blue" routerLink="/home" > Vuelve a casa </a> 
-            <p class="text-2xl"> c: </p>
     </div>
 </div>

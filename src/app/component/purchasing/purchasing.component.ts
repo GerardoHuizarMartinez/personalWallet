@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component } from '@angular/core';
 import { HeaderComponent } from '../header/header.component';
 import { SideNavbarComponent } from '../side-navbar/side-navbar.component';
 import { FormGroup, FormBuilder, Validators, FormControl  } from '@angular/forms';
@@ -16,15 +16,13 @@ import { MatTableDataSource, MatTableModule} from '@angular/material/table';
 import { MatSort, MatSortModule} from '@angular/material/sort';
 import { MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import { AfterViewInit, ViewChild} from '@angular/core';
+import { purchaseService } from '../../services/purchase.service';
+import { Category } from '../../models/categories.interface';
+import { OnInit } from '@angular/core';
 
 
-//import {}  
-export interface UserData {
-    id: string;
-    name: string;
-    progress: string;
-    fruit: string;
-  }
+
+
 
   const FRUITS: string[] = [
     'blueberry',
@@ -66,34 +64,69 @@ export interface UserData {
             MatButtonModule, MatIconModule, MatSelectModule, MatDatepickerModule, MatRadioModule,
             MatTableModule,MatPaginator, MatSortModule, MatPaginatorModule ],
   templateUrl: './purchasing.component.html',
-  providers: [provideNativeDateAdapter()],
+  providers: provideNativeDateAdapter(),  
   styleUrl: './purchasing.component.css'
 })
 
 export class PurchasingComponent {
+
   displayedColumns: string[] = ['Mes', 'Concepto', 'FechaPago', 'Monto'];
+
+
   
-  dataSource: MatTableDataSource<UserData> ;
+  dataSource: any;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
   formulario!: FormGroup;
+  listOfCat : Category[] = [];
   
-  constructor(private formBuilder: FormBuilder){ 
+  constructor(
+    private formBuilder: FormBuilder,
+    private purchaseService : purchaseService
+  )
+  { 
         // Create 100 users
         const users = Array.from({length: 15}, (_, k) => this.createNewUser(k + 1));
 
         // Assign the data to the data source for the table to render
         this.dataSource = new MatTableDataSource(users);
+        this.getAllCategories();
+  }
+
+  ngOnInit(): void {
+    this.formulario = this.formBuilder.group({
+      fk_idUser: [ 1, Validators.required],
+      purchaseDate: [, Validators.required ],
+      productName: [, Validators.required],
+      price: [, Validators.required],
+      paymentMethod: [, Validators.required],
+      typePurchase: [null, Validators.required],
+      totalToPay: [null, Validators.required],
+      paymentPerMonth: [null, Validators.required],
+      dateToPay: [null, Validators.required],
+      status: [, Validators.required],
+      registrationDate: [, Validators.required],
+      fk_idCategory: [ , Validators.required],
+    });
+  }
+
+
+  getAllCategories() {
+      this.purchaseService.getAllCategoriesServ().subscribe(
+        data => { this.listOfCat = data;}
+      )
+  }
+
+  registerPurchase(){
+    console.log(this.formulario.value)
   }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
-
-
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -104,7 +137,7 @@ export class PurchasingComponent {
     }
   }
 
-   createNewUser(id: number): UserData {
+   createNewUser(id: number){
     const name =
       NAMES[Math.round(Math.random() * (NAMES.length - 1))] +
       ' ' +
@@ -119,19 +152,6 @@ export class PurchasingComponent {
     };
   }
 
-  options = [
-    {opt:"Gasto de la casa" },
-    {opt:"NO"}
-    
-  ]
-   
 
-  ngOnInit(): void {
-    // Creamos el formulario reactivo con los campos y validaciones
-    this.formulario = this.formBuilder.group({
-      nombre: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      telefono: ['', Validators.pattern('[0-9]{10}')],
-    });
-  }
+
 }

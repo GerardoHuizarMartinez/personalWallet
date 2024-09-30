@@ -1,0 +1,21 @@
+/* Estilos generales para la barra de desplazamiento */
+::-webkit-scrollbar {
+    width: 0px;
+    direction: rtl;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    direction: rtl;
+
+}
+
+::-webkit-scrollbar-thumb {
+    background: #004788;
+    border-radius: 4px;
+    direction: rtl;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #65b6ff;
+}

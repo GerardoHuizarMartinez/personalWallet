@@ -1,17 +1,91 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { HeaderComponent } from '../header/header.component';
 import { SideNavbarComponent } from '../side-navbar/side-navbar.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ScaleType } from '@swimlane/ngx-charts';
+import { purchaseService } from '../../services/purchase.service';
+import { MatIcon } from '@angular/material/icon';
+import { MatTableModule } from '@angular/material/table';
+import { DatePipe } from '@angular/common';
+import { registerLocaleData } from '@angular/common';
+import localeEsMx from '@angular/common/locales/es-MX';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [HeaderComponent, SideNavbarComponent, NgxChartsModule],
+  imports: [HeaderComponent, SideNavbarComponent, MatIcon, MatTableModule, NgxChartsModule,  MatTooltipModule, RouterLink],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
+  
+  today: DatePipe = new DatePipe('es-MX');
+  curDate = new Date();
+  purchases: any[] = [];
+  categories : any = [];
+  
+  summary : any = [];
+  totalCategories : number = 0;
+ // displayedColumns: string[] = ['indice', 'date', 'method', 'details', 'price','actions'];
+  
+  constructor(
+    private purchaseService : purchaseService,
+   ) {
+    registerLocaleData(localeEsMx);
+  }
+  ngOnInit() {
+    this.updateDataOnScreen();
+  }
+
+  updateDataOnScreen(){
+    this.getPurchasesByUser();
+    this.getSummaryByUser();
+    this.getCategoriesByUser();
+  }
+
+
+  async getPurchasesByUser (){
+    this.purchaseService.getAllPurchaseServ().subscribe(
+      res => {
+        this.purchases = res;
+      }
+    )
+  }
+
+  async getCategoriesByUser(){
+    this.purchaseService.getAllCategoriesServ().subscribe(
+      res => {
+        this.categories = res;
+        this.totalByCategories();
+      }
+    )
+  }
+
+  async getSummaryByUser(){
+    this.purchaseService.getSummaryPerMonthServ().subscribe(
+      res => {
+        this.summary = res;
+      }
+    )
+  }
+  
+  async totalByCategories(){
+    this.totalCategories = 0 ;
+    this.categories.forEach((cat : {value:number}) => {
+      this.totalCategories += cat.value
+    });
+  }
+
+  async deletepurchase(idPurchase : number){
+   
+    this.purchaseService.deletePurchaseServ(idPurchase , "Cancelado").subscribe(() => {
+      this.updateDataOnScreen();
+    });
+  
+  }
+
   
   single = [
     {
@@ -20,7 +94,7 @@ export class HomeComponent {
     },
     {
       "name": "Gastos",
-      "value": 9043.03
+      "value": this.totalCategories
     },
     {
       "name": "Mes anterior",
@@ -35,7 +109,7 @@ export class HomeComponent {
       "value": 1278.10
     }
   ];
-  view: [number, number] = [250, 190];
+  view: [number, number] = [250, 130];
 
  //////////////////////////////////////////////////// options graph 1 ///////////////////////////////////////////////////////////////////
  gradient: boolean = false;
@@ -49,22 +123,23 @@ export class HomeComponent {
     name: 'neons',
     selectable: true,
     group: ScaleType.Ordinal,
-    domain: [      
-      '#FF3333',
-      '#FF33FF',
-      '#CC33FF',
-      '#0000FF',
-      '#33CCFF',
-      '#33FFFF',
-      '#33FF66',
-      '#CCFF33',
-      '#FFCC00',
-      '#FF6600']
+    domain:
+  [
+    
+    "#007FFF",  // Azul
+      "#FF7F00",  // Naranja
+      "#FFFF00",  // Amarillo
+      "#00FF00",  // Verde
+      "#00FFFF",  // Cian
+      "#FF0000",  // Rojo
+      "#00FF7F",  // Verde aguamarina
+  ]
+
   };
 
 
   //////////////////////////////////////////////////// options graph categories ///////////////////////////////////////////////////////////////////
-  viewC: [number, number] = [400, 230];
+  viewCategoriesInformation: [number, number] = [400, 230];
   
   singleC = [
     {
@@ -100,21 +175,32 @@ export class HomeComponent {
      name: 'neons',
      selectable: true,
      group: ScaleType.Ordinal,
-     domain: [      
-      '#a8385d',
-      '#7aa3e5',
-      '#a27ea8',
-      '#aae3f5',
-      '#adcded',
-      '#a95963',
-      '#8796c0',
-      '#7ed3ed',
-      '#50abcc',
-      '#ad6886']
-   };
-  constructor() {
-    //Object.assign(this, { single });
-  }
+     domain:[
+      "#FF0000",  // Rojo
+      "#FF7F00",  // Naranja
+      "#FFFF00",  // Amarillo
+      "#7FFF00",  // Verde lima
+      "#00FF00",  // Verde
+      "#00FF7F",  // Verde aguamarina
+      "#00FFFF",  // Cian
+      "#007FFF",  // Azul
+      "#0000FF",  // Azul intenso
+      "#7F00FF",  // Violeta
+      "#FF00FF",  // Magenta
+      "#FF007F",  // Rosa
+      "#FF6F61",  // Coral
+      "#FF8C00",  // Naranja oscuro
+      "#FFD700",  // Dorado
+      "#FF1493",  // Rosa profundo
+      "#FF69B4",  // Rosa brillante
+      "#FF4500",  // Naranja rojizo
+      "#FFB300",  // Amarillo cálido
+      "#D50000",  // Rojo intenso
+      "#C2185B"   // Rosa fuerte
+    ]
+    };
+
+
 
   onSelect(data:any): void {
     console.log('Item clicked', JSON.parse(JSON.stringify(data)));
