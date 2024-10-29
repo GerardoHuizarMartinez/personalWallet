@@ -1,0 +1,204 @@
+<div class="flex h-screen bg-blue p-2 lg:p-8 lg:items-center lg:justify-center overflow-y-scroll">
+
+
+    <div class=" w-full flex flex-col gap-4 bg-white h-max lg:max-w-7xl lh:min-h-7xl">
+        <span class="flex w-full justify-between flex-col">
+            <span class="flex justify-between p-4">
+                <h3 class="text-3xl"> Registra tus datos </h3>
+                <h3 class="pr-[8px] text-3xl hover:cursor-pointer" matTooltip="Cerrar"> X </h3>
+            </span>
+
+            <span class="flex w-full justify-evenly flex-row">
+                <p class="min-w-max"> Alto: {{alto}} </p>
+                <p class="min-w-max"> Ancho: {{ancho}} </p>
+            </span>
+        </span>
+
+
+        <mat-horizontal-stepper [orientation]="(stepperOrientation | async)!">
+
+            <mat-step [stepControl]="userFormGroup" label="Dejanos conocerte">
+                <form [formGroup]="userFormGroup">
+                    <section class="gap-2 flex lg:gap-4 lg:rounded-lg lg:w-full lg:p-2">
+                        <mat-form-field class="w-1/2 lg:w-1/2 " appearance="outline">
+                            <input formControlName="name" matInput placeholder="Nombre(s)">
+                            @if (userFormGroup.get('name')?.hasError('required')) {
+                            <mat-error>Nombre requerido.</mat-error>
+                            }
+                        </mat-form-field>
+
+                        <mat-form-field class="w-1/2 lg:w-1/2 " appearance="outline">
+                            <input formControlName="lastname" matInput placeholder="Apellido(s)">
+                            @if (userFormGroup.get('lastname')?.hasError('required')) {
+                            <mat-error>Apellido requerido.</mat-error>
+                            }
+
+                        </mat-form-field>
+                    </section>
+                    <div>
+                        <button matStepperNext class="w-full h-[50px] rounded-lg text-white "
+                            [disabled]="!userFormGroup.get('name')?.value || !userFormGroup.get('lastname')?.value"
+                            [class]="(!userFormGroup.get('name')?.value || !userFormGroup.get('lastname')?.value) ? 'bg-gray hover:cursor-no-drop' : 'bg-blue'">
+                            Siguiente </button>
+                    </div>
+                </form>
+            </mat-step>
+
+            <mat-step [stepControl]="userFormGroup" label="Cuentanos mas de ti">
+                <form [formGroup]="userFormGroup">
+                    <section class="lg:flex lg:gap-4 lg:rounded-lg lg:w-full lg:p-2">
+                        <mat-form-field class="w-full lg:w-1/3 md:gap-0" appearance="fill">
+                            <mat-label>Fecha de nacimiento </mat-label>
+                            <input type="date" matInput formControlName="birthday" placeholder="Fecha de nacimiento">
+                        </mat-form-field>
+
+                        <mat-form-field class="w-full lg:w-1/3" appearance="outline">
+                            <mat-select placeholder="Genero" formControlName="gender">
+
+                                @for (item of gender; track $index) {
+                                <mat-option value="{{item}}"> {{item}} </mat-option>
+                                }
+
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field class="w-full lg:w-1/3" appearance="outline">
+                            <input type="tel" formControlName="telephone"
+                                onkeypress="return event.charCode > 47 && event.charCode < 58" matInput
+                                placeholder="Numero de telefono">
+                        </mat-form-field>
+                    </section>
+                    <div class="gap-1 flex">
+                        <button matStepperPrevious class="w-1/2 bg-gray h-[50px] rounded-lg text-white"> Volver
+                        </button>
+                        <button matStepperNext class="w-1/2 h-[50px] rounded-lg text-white"
+                            [class]="(!userFormGroup.get('birthday')?.value || !userFormGroup.get('gender')?.value) ? 'bg-gray hover:cursor-no-drop' : 'bg-blue'"
+                            [disabled]="!userFormGroup.get('birthday')?.value || !userFormGroup.get('gender')?.value">
+                            Siguiente </button>
+                    </div>
+                </form>
+            </mat-step>
+
+            <mat-step [stepControl]="userFormGroup" label="Donde podemos contactarte">
+                <form [formGroup]="userFormGroup">
+
+                    <section class="lg:flex lg:gap-4 lg:rounded-lg lg:w-full lg:p-2 gap-2 flex">
+                        <mat-form-field class="w-1/2" appearance="outline">
+                            <input matInput placeholder="País*" formControlName="country">
+                            @if (userFormGroup.get('country')?.hasError('required')) {
+                                <mat-error>País requerido.</mat-error>
+                                }
+                        </mat-form-field>
+
+                        <mat-form-field class="w-1/2" appearance="outline">
+                            <input type="tel" matInput placeholder="Codigo postal" formControlName="postalCode"
+                            onkeypress="return event.charCode > 47 && event.charCode < 58">
+                            @if (userFormGroup.get('postalCode')?.hasError('required')) {
+                                <mat-error>Codigo postal requerido.</mat-error>
+                                }
+                        </mat-form-field>
+                    </section>
+
+                    <section class="flex lg:gap-4 lg:rounded-lg lg:w-full lg:p-2 gap-2">
+
+                        <mat-form-field class="w-1/2" appearance="outline">
+                            <input matInput placeholder="Estado" formControlName="state">
+                            @if (userFormGroup.get('state')?.hasError('required')) {
+                                <mat-error>Estado requerido.</mat-error>
+                                }
+                        </mat-form-field>
+
+                        <mat-form-field class="w-1/2" appearance="outline">
+                            <input matInput placeholder="Municipio" formControlName="municipality">
+                            @if (userFormGroup.get('municipality')?.hasError('required')) {
+                                <mat-error>Municipio requerido.</mat-error>
+                                }
+                        </mat-form-field>
+                    </section>
+
+                    <section class="lg:flex lg:gap-4 lg:rounded-lg lg:w-full lg:p-2">
+
+                        <mat-form-field class="w-full lg:w-1/2" appearance="outline">
+                            <input matInput placeholder="Colonia" formControlName="colony">
+                            @if (userFormGroup.get('name')?.hasError('required')) {
+                                <mat-error>Colonia requerida.</mat-error>
+                                }
+                        </mat-form-field>
+
+                        <mat-form-field class="w-full lg:w-1/2" appearance="outline">
+                            <input matInput placeholder="Dirección" formControlName="address">
+                            @if (userFormGroup.get('address')?.hasError('required')) {
+                                <mat-error>Dirección requerida.</mat-error>
+                                }
+                        </mat-form-field>
+                    </section>
+
+                    <div class="gap-1 flex">
+                        <button matStepperPrevious class="w-1/2 bg-gray h-[50px] rounded-lg text-white"> Volver
+                        </button>
+                        <button matStepperNext class="w-1/2 bg-blue h-[50px] rounded-lg text-white"> Siguiente </button>
+                    </div>
+                </form>
+            </mat-step>
+
+            <mat-step [stepControl]="fourthFormGroup" label="Donde podemos contactarte">
+                <form [formGroup]="fourthFormGroup">
+
+
+                    <section class="lg:flex lg:gap-4 lg:rounded-lg lg:w-full lg:p-2">
+                        <mat-form-field class="w-full lg:w-1/2" appearance="outline">
+                            <input type="email" matInput placeholder="Correo electronico">
+                        </mat-form-field>
+
+                        <mat-form-field class="w-full lg:w-1/2" appearance="outline">
+                            <input type="email" matInput placeholder="Confirma correo">
+                        </mat-form-field>
+                    </section>
+                    <div>
+                        <div class="gap-1 flex">
+                            <button matStepperPrevious class="w-1/2 bg-gray h-[50px] rounded-lg text-white"> Volver
+                            </button>
+                            <button matStepperNext class="w-1/2 bg-blue h-[50px] rounded-lg text-white"> Siguiente
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </mat-step>
+
+            <mat-step label="Casi lo tienes">
+                <section class="lg:flex lg:gap-4 lg:rounded-lg lg:w-full lg:p-2">
+                    <mat-form-field class="w-full lg:w-1/2" appearance="outline">
+                        <input [type]="pass1 ? 'text' : 'password'" matInput placeholder="Contraseña">
+                        @if (pass1) {
+
+                        <mat-icon matSuffix (click)="shwPass()" class="cursor-pointer"> visibility_off </mat-icon>
+                        }@else {
+
+                        <mat-icon matSuffix (click)="shwPass()" class="cursor-pointer"> visibility </mat-icon>
+                        }
+                    </mat-form-field>
+
+                    <mat-form-field class="w-full lg:w-1/2" appearance="outline">
+                        <input [type]="confPass ? 'text' : 'password'" matInput placeholder="Confirma contraseña">
+                        @if (confPass) {
+
+                        <mat-icon matSuffix (click)="shwConf()" class="cursor-pointer"> visibility_off </mat-icon>
+                        }@else {
+
+                        <mat-icon matSuffix (click)="shwConf()" class="cursor-pointer"> visibility </mat-icon>
+                        }
+                    </mat-form-field>
+                </section>
+
+                <section class="gap-4 flex lg:gap-4 lg:w-full">
+                    <button matStepperPrevious class="w-full bg-gray h-[50px] rounded-lg text-white"> Volver </button>
+                    <button matStepperNext class="w-full bg-blue h-[50px] rounded-lg text-white" (click)="printData()"
+                        [class]="(userFormGroup.invalid ? 'bg-gray hover:cursor-no-drop' : 'bg-blue')"
+                        [disabled]="userFormGroup.invalid"> Crear cuenta </button>
+                </section>
+
+            </mat-step>
+        </mat-horizontal-stepper>
+    </div>
+
+</div>
